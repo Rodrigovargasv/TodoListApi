@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Domain", "TodoList.Domain\TodoList.Domain.csproj", "{603F718E-41F0-44C0-9895-548DE3B7157F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Domain", "TodoList.Domain\TodoList.Domain.csproj", "{603F718E-41F0-44C0-9895-548DE3B7157F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Application", "TodoList.Application\TodoList.Application.csproj", "{591E16CF-22E4-463C-A6A0-EB4B1F588759}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Infra.Data", "TodoList.Infra.Data\TodoList.Infra.Data.csproj", "{7BBF71FB-7538-41CB-AB79-0D99F6E16973}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Infra.Ioc", "TodoList.Infra.Ioc\TodoList.Infra.Ioc.csproj", "{5ADC8F82-6358-43C8-A1A3-8EFA8306AC3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{603F718E-41F0-44C0-9895-548DE3B7157F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{603F718E-41F0-44C0-9895-548DE3B7157F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{603F718E-41F0-44C0-9895-548DE3B7157F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{591E16CF-22E4-463C-A6A0-EB4B1F588759}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{591E16CF-22E4-463C-A6A0-EB4B1F588759}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{591E16CF-22E4-463C-A6A0-EB4B1F588759}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{591E16CF-22E4-463C-A6A0-EB4B1F588759}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BBF71FB-7538-41CB-AB79-0D99F6E16973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BBF71FB-7538-41CB-AB79-0D99F6E16973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BBF71FB-7538-41CB-AB79-0D99F6E16973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BBF71FB-7538-41CB-AB79-0D99F6E16973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ADC8F82-6358-43C8-A1A3-8EFA8306AC3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ADC8F82-6358-43C8-A1A3-8EFA8306AC3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ADC8F82-6358-43C8-A1A3-8EFA8306AC3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ADC8F82-6358-43C8-A1A3-8EFA8306AC3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
