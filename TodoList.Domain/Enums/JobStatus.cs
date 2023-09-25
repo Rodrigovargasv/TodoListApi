@@ -1,7 +1,7 @@
 ﻿
 namespace TodoList.Domain.Enums
 {
-    public enum TaskStatus
+    public enum JobStatus
     {
         PENDENTE = 1,
         Em_PROGRESSO = 2,

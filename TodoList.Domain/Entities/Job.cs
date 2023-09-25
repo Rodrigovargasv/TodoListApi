@@ -4,9 +4,9 @@ using TodoList.Domain.ValueObject;
 
 namespace TodoList.Domain.Entities
 {
-    public class Task
+    public class Job
     {
-        public Task(int id, string name, string description, Date date, TaskStatus taskStatus)
+        public Job(int id, string name, string description, Date date, TaskStatus taskStatus)
         {
             DomainExceptionValidation.When(string.IsNullOrEmpty(Name) || string.IsNullOrWhiteSpace(Name),
                 "O campo nome tem preenchimento obrigatorio");
