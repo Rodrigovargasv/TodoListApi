@@ -12,7 +12,16 @@ namespace TodoList.Infra.Data.EntityConfiguration
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).HasMaxLength(100).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(200).IsRequired();
-            builder.Property(x => x.Date).IsRequired();
+            builder.Property(x => x.TaskStatus).IsRequired();
+            builder.Property(x => x.CreateDate).IsRequired();
+            builder.Property(x => x.ExecutionDate).IsRequired();
+
+
+
+
+
+
+
         }
     }
 }
