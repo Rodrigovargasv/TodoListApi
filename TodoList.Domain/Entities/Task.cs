@@ -1,4 +1,5 @@
 ﻿
+using TodoList.Domain.Validation;
 using TodoList.Domain.ValueObject;
 
 namespace TodoList.Domain.Entities
@@ -7,11 +8,16 @@ namespace TodoList.Domain.Entities
     {
         public Task(int id, string name, string description, Date date, TaskStatus taskStatus)
         {
+            DomainExceptionValidation.When(string.IsNullOrEmpty(Name) || string.IsNullOrWhiteSpace(Name),
+                "O campo nome tem preenchimento obrigatorio");
+
             Id = id;
             Name = name;
             Description = description;
             Date = date;
             this.TaskStatus = taskStatus;
+
+           
         }
 
         public int Id { get; private set; }
@@ -20,10 +26,9 @@ namespace TodoList.Domain.Entities
 
         public string Description { get; private set; }
 
-        public Date Date { get; private set; }
+        public Date Date { get; private set; } 
 
         public TaskStatus TaskStatus { get; }
-
 
     }
 }
