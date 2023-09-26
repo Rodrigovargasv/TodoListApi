@@ -11,7 +11,5 @@ namespace TodoList.Domain.Interfaces
         Task<Job> UpdateJobAsync(Job job);
         Task<Job> DeleteJobAsync(Job job);
 
-
-
     }
 }

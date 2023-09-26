@@ -22,7 +22,7 @@ namespace TodoList.Infra.Data.Migrations
                     Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ExecutionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    TaskStatus = table.Column<int>(type: "integer", nullable: false)
+                    JobStatus = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -12,7 +12,7 @@ using TodoList.Infra.Data.Context;
 namespace TodoList.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230925210733_InitialCreate")]
+    [Migration("20230926120131_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,13 +44,13 @@ namespace TodoList.Infra.Data.Migrations
                     b.Property<DateTime>("ExecutionDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("JobStatus")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<int>("TaskStatus")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

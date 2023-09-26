@@ -1,23 +1,25 @@
 ﻿
+using TodoList.Domain.Enums;
 using TodoList.Domain.Validation;
 
 namespace TodoList.Domain.Entities
 {
     public class Job
     {
-        public Job(int id, string name, string description, DateTime createDate, DateTime executionDate, TaskStatus taskStatus)
+        public Job(int id, string name, string description, DateTime createDate, DateTime executionDate, JobStatus jobStatus)
         {
             DomainExceptionValidation.When(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name),
                 "O campo nome tem preenchimento obrigatório");
 
-            DomainExceptionValidation.When(createDate > DateTime.Now, "A data de criação da tarefa deve estar no passado."); CreateDate = DateTime.Now;
+
+
 
             Id = id;
             Name = name;
             Description = description;
             CreateDate = DateTime.Now;
             ExecutionDate = executionDate;
-            TaskStatus = taskStatus;
+            JobStatus = jobStatus;
         }
 
         public int Id { get; private set; }
@@ -30,7 +32,7 @@ namespace TodoList.Domain.Entities
 
         public DateTime ExecutionDate { get; private set; }
 
-        public TaskStatus TaskStatus { get; private set; }
+        public JobStatus JobStatus { get; private set; }
 
     }
 }
