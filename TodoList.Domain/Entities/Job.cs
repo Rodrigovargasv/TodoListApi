@@ -6,33 +6,48 @@ namespace TodoList.Domain.Entities
 {
     public class Job
     {
-        public Job(int id, string name, string description, DateTime createDate, DateTime executionDate, JobStatus jobStatus)
+        public Job(int id, string name, string description, DateTime executionDate)
         {
-            DomainExceptionValidation.When(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name),
-                "O campo nome tem preenchimento obrigatório");
-
-
-
-
+            
             Id = id;
-            Name = name;
             Description = description;
             CreateDate = DateTime.Now;
-            ExecutionDate = executionDate;
-            JobStatus = jobStatus;
+            ExecutionDate = DateTime.Now;
+            JobStatus = JobStatus.PENDENTE;
+
+
+            ValidationAddDomainJob(name, executionDate);
+
+
         }
 
         public int Id { get; private set; }
 
         public string Name { get; private set; }
 
-        public string Description { get; private set; }
+        public string? Description { get; private set; }
 
-        public DateTime CreateDate { get; }
+        public DateTime CreateDate { get; private set; }
 
         public DateTime ExecutionDate { get; private set; }
 
         public JobStatus JobStatus { get; private set; }
+
+
+        public void ValidationAddDomainJob(string name, DateTime executionDate)
+        {
+
+            DomainExceptionValidation.When(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name),
+                "O campo nome tem preenchimento obrigatório");
+
+            DomainExceptionValidation.When(executionDate < CreateDate, 
+                "A data para execução da tarefa não pode ser menor que a data de criação");
+
+            Name = name;
+            ExecutionDate = executionDate;
+            
+            
+        }
 
     }
 }

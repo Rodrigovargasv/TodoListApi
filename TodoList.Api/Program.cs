@@ -12,6 +12,16 @@ builder.Services.AddServices(builder.Configuration);
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("EnableCORS", builder =>
+    {
+        builder.WithOrigins("http://localhost:4200")
+        .AllowAnyOrigin()
+        .AllowAnyHeader().AllowAnyMethod().Build();
+    });
+});
+
 var app = builder.Build();
 
 
@@ -27,5 +37,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapControllers();
+app.UseCors("EnableCORS");
 
 app.Run();
