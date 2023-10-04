@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using TodoList.Infra.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,13 +17,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("EnableCORS", builder =>
     {
-        builder.WithOrigins("http://localhost:4200")
+        builder.WithOrigins("http://localhost:3000")
         .AllowAnyOrigin()
         .AllowAnyHeader().AllowAnyMethod().Build();
     });
 });
-
 var app = builder.Build();
+
 
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

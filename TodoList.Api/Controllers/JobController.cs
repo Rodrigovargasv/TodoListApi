@@ -62,16 +62,19 @@ namespace TodoList.Api.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult> UpdateJob(int id, [FromBody] Job job)
         {
+           
             if (id != job.Id)
                 return BadRequest();
 
             if (job is null)
-                BadRequest();
+                return BadRequest();
+
 
             await _jobService.UpdateJobAsync(job);
+            
 
             return Ok(job);
         }

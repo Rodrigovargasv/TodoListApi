@@ -32,7 +32,8 @@ namespace TodoList.Infra.Data.Repository
 
         public async Task<IEnumerable<Job>> GetAllJobAsync()
         {
-            return await _context.Jobs.ToListAsync();
+            return await _context.Jobs.OrderBy(x => x.Id)
+                .ToListAsync();
         }
 
         public async Task<Job> GetJobByIdAsync(int? id)

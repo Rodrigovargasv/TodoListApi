@@ -19,11 +19,12 @@ namespace TodoList.Test.Domain
             var Name = "mercado";
             var description = "Some description";
             var executionDate = DateTime.Now;
+            var dd = 1;
 
             // Act & Assert
             Assert.ThrowsException<DomainExceptionValidation>(() =>
             {
-                new Job(id, Name, description, executionDate);
+                new Job(id, Name, description, executionDate, null);
             });
 
         }
@@ -44,7 +45,7 @@ namespace TodoList.Test.Domain
             // Act & Assert
             Assert.ThrowsException<DomainExceptionValidation>(() =>
             {
-                new Job(id, emptyName, description, executionDate);
+                new Job(id, emptyName, description, executionDate, null);
             });
 
         }
@@ -63,7 +64,7 @@ namespace TodoList.Test.Domain
             // Act & Assert
             Assert.ThrowsException<DomainExceptionValidation>(() =>
             {
-                new Job(id, emptyName, description, executionDate);
+                new Job(id, emptyName, description, executionDate, null);
             });
 
         }
@@ -83,7 +84,7 @@ namespace TodoList.Test.Domain
             // Act & Assert
             Assert.ThrowsException<DomainExceptionValidation>(() =>
             {
-                new Job(id, emptyName, description, executionDate);
+                new Job(id, emptyName, description, executionDate, null);
             });
 
         }
@@ -103,7 +104,7 @@ namespace TodoList.Test.Domain
             // Act & Assert
             Assert.ThrowsException<DomainExceptionValidation>(() =>
             {
-                new Job(id, emptyName, description, executionDate);
+                new Job(id, emptyName, description, executionDate, null);
             });
 
         }

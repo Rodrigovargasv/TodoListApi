@@ -12,7 +12,7 @@ using TodoList.Infra.Data.Context;
 namespace TodoList.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230926120131_InitialCreate")]
+    [Migration("20231004191929_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -33,13 +33,10 @@ namespace TodoList.Infra.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("ExecutionDate")
                         .HasColumnType("timestamp with time zone");
