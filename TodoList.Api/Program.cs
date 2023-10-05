@@ -1,5 +1,3 @@
-
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using TodoList.Infra.Ioc;
 
@@ -12,6 +10,7 @@ builder.Services.AddSwaggerGen();
 
 // Adiconando o serviço de injeção de depêndencia.
 builder.Services.AddServices(builder.Configuration);
+
 builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
