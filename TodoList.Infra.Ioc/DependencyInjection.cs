@@ -1,4 +1,6 @@
 ﻿
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +14,6 @@ namespace TodoList.Infra.Ioc
 {
     public static class DependencyInjection
     {
-
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(option =>
@@ -20,8 +21,23 @@ namespace TodoList.Infra.Ioc
             bulder => bulder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
 
+            // habilita sistema agenda envios dos emails
+            services.AddHangfire(x => x.UseMemoryStorage());
+            services.AddHangfireServer();
+
+
             services.AddScoped<IJobRepository, JobRepository>();
             services.AddScoped<IJobService, JobService>();
+            services.AddScoped<IEmailRespository, EmailRepository>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ISendEmail, SendEmailService>();
+
+
+            services.AddScoped<JobService>();
+            services.AddScoped<SendEmailService>();
+            services.AddScoped<EmailService>();
+
+
 
             return services;
         }

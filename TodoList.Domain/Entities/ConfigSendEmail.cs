@@ -1,10 +1,8 @@
 ﻿
 namespace TodoList.Domain.Entities
 {
-    public class EmailModel
+    public class ConfigSendEmail
     {
-
-        public string ToEmail { get; set; }
 
         public string Subject { get; set; }
 

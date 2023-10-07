@@ -15,12 +15,6 @@ namespace TodoList.Infra.Data.EntityConfiguration
             builder.Property(x => x.JobStatus).IsRequired();
             builder.Property(x => x.ExecutionDate).IsRequired();
 
-
-
-
-
-
-
         }
     }
 }

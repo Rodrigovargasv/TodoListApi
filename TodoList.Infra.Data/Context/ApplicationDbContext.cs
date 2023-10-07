@@ -9,6 +9,7 @@ namespace TodoList.Infra.Data.Context
             : base(options) { }
 
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Email> Emails { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

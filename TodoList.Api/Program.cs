@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.Extensions.Options;
 using TodoList.Infra.Ioc;
 
@@ -18,8 +19,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("EnableCORS", builder =>
     {
         builder.WithOrigins("http://localhost:3000")
-        .AllowAnyOrigin()
-        .AllowAnyHeader().AllowAnyMethod().Build();
+        .AllowAnyHeader()
+        .AllowAnyMethod();
     });
 });
 var app = builder.Build();
@@ -35,9 +36,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHangfireDashboard();
 app.UseHttpsRedirection();
 
 app.MapControllers();
 app.UseCors("EnableCORS");
+
 
 app.Run();
