@@ -1,7 +1,7 @@
 ﻿
 namespace TodoList.Domain.Entities
 {
-    public class ConfigSendEmail
+    public class DataEmail
     {
 
         public string Subject { get; set; }

@@ -32,7 +32,7 @@ namespace TodoList.Api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> SendEmail(int jobId, int timeSendEmail, [FromBody] ConfigSendEmail emailModel)
+        public async Task<IActionResult> SendEmail(int jobId, int timeSendEmail, [FromBody] DataEmail emailModel)
         {
 
             try

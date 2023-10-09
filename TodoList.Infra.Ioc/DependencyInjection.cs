@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TodoList.Application.Interfaces;
 using TodoList.Application.Services;
+using TodoList.Domain.Entities;
 using TodoList.Domain.Interfaces;
 using TodoList.Infra.Data.Context;
 using TodoList.Infra.Data.Repository;
@@ -20,7 +21,10 @@ namespace TodoList.Infra.Ioc
             option.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
             bulder => bulder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-
+            // Obter os dados de envio de email do appsettings
+            services.Configure<EmailSetting>(configuration.GetSection("EmailSettings"));
+            services.AddScoped<EmailSetting>();
+          
             // habilita sistema agenda envios dos emails
             services.AddHangfire(x => x.UseMemoryStorage());
             services.AddHangfireServer();
