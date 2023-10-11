@@ -46,7 +46,7 @@ namespace TodoList.Api.Controllers
 
                 var dateExecution = _jobService.GetJobByIdAsync(jobId).Result;
 
-                var differentTime = dateExecution.ExecutionDate - DateTime.Now;
+                var differentTime = dateExecution.ExecutionDate.AddHours(3) - DateTime.Now;
 
                 if (differentTime.TotalSeconds <= 0)
                 {
