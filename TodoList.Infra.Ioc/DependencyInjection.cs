@@ -42,7 +42,6 @@ namespace TodoList.Infra.Ioc
             services.AddScoped<EmailService>();
 
 
-
             return services;
         }
 

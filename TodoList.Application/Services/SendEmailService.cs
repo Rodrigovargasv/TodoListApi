@@ -25,7 +25,7 @@ namespace TodoList.Application.Services
 
             try
             {
-                var emails = _emailService.GetEmailByIdAsync(1);
+                var emails = await _emailService.GetEmailByIdAsync(1);
 
                 var message = new MimeMessage();
                 message.From.Add(new MailboxAddress("TodoListApi", "Tarefa"));

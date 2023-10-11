@@ -1,7 +1,7 @@
 ﻿
 namespace TodoList.Domain.Validation
 {
-    public class DomainExceptionValidation : Exception
+    public class DomainExceptionValidation : Exception 
     {
         public DomainExceptionValidation(string error) : base(error) { }
 

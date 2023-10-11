@@ -1,5 +1,7 @@
 using Hangfire;
 using Microsoft.Extensions.Options;
+using System.Net.Mail;
+using TodoList.Domain.Entities;
 using TodoList.Infra.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +20,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("EnableCORS", builder =>
     {
-        builder.WithOrigins("http://localhost:3000")
+        builder.WithOrigins("http://localhost:3000", "https://todo-list-web-nine.vercel.app")
         .AllowAnyHeader()
         .AllowAnyMethod();
     });

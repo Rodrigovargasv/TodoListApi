@@ -37,7 +37,7 @@ namespace TodoList.Api.Controllers
 
             try
             {
-                var email = _emailService.GetEmailByIdAsync(1).Result;
+                var email = await _emailService.GetEmailByIdAsync(1);
 
                 if (string.IsNullOrEmpty(email.EmailSend))
                 {
@@ -70,8 +70,6 @@ namespace TodoList.Api.Controllers
 
 
         }
-
-
 
 
     }

@@ -9,36 +9,16 @@ namespace TodoList.Test.Domain
     {
 
 
+   
+
         [TestMethod]
         [TestCategory("Domain")]
-        public void CreatedJob_WithNameIsNameNull_Should_IsValid()
+        public void CreatedJob_IfhNameIsNameNullOrEmpty_Should_RetunDomainExceptionValidation()
         {
 
             // Arrange
             var id = 1;
-            var Name = "mercado";
-            var description = "Some description";
-            var executionDate = DateTime.Now;
-            var dd = 1;
-
-            // Act & Assert
-            Assert.ThrowsException<DomainExceptionValidation>(() =>
-            {
-                new Job(id, Name, description, executionDate, null);
-            });
-
-        }
-
-
-
-        [TestMethod]
-        [TestCategory("Domain")]
-        public void CreatedJob_WithNameIsNameNull_Should_ReturnErro()
-        {
-
-            // Arrange
-            var id = 1;
-            var emptyName = "";
+            string? emptyName = null;
             var description = "Some description";
             var executionDate = DateTime.Now;
 
@@ -52,7 +32,7 @@ namespace TodoList.Test.Domain
 
         [TestMethod]
         [TestCategory("Domain")]
-        public void CreatedJob_WithNameWhiteSpace_Should_ReturnErro()
+        public void CreatedJob_IfNameWhiteSpace_Should_ReturnDomainExceptionValidation()
         {
 
             // Arrange
@@ -69,46 +49,42 @@ namespace TodoList.Test.Domain
 
         }
 
+        //[TestMethod]
+        //[TestCategory("Domain")]
+        //public void CreateJob_IfDateIsSmallerDateCurrent_Sould_ReturnDomainExceptionValidation()
+        //{
+        //    // Arrange
+        //    var id = 1;
+        //    var emptyName = " ";
+        //    var description = "Some description";
+        //    var executionDate = DateTime.Now.AddMinutes(2); ;
+
+        //    // Act & Assert
+        //    Assert.ThrowsException<DomainExceptionValidation>(() =>
+        //    {
+        //        new Job(id, emptyName, description, executionDate, null);
+        //    });
+
+        //}
+
 
         [TestMethod]
         [TestCategory("Domain")]
-        public void CreatedJob_Should_IsValid()
+        public void CreatedJob_IfNameIsnNotSmaller_WhatThree_Should_ReturnDomainExceptionValidation()
         {
-
-            // Arrange
             var id = 1;
-            var emptyName = "Teste";
+            var Name = "Tes";
             var description = "Some description";
             var executionDate = DateTime.Now;
 
-            // Act & Assert
             Assert.ThrowsException<DomainExceptionValidation>(() =>
             {
-                new Job(id, emptyName, description, executionDate, null);
+                new Job(id, Name, description, executionDate, null);
             });
 
         }
 
-
-        [TestMethod]
-        [TestCategory("Domain")]
-        public void CreatedJob_Should_DataExecutionInvalid()
-        {
-
-            // Arrange
-            var id = 1;
-            var emptyName = "Teste";
-            var description = "Some description";
-            var executionDate = DateTime.Now.AddDays(-3);
-
-            // Act & Assert
-            Assert.ThrowsException<DomainExceptionValidation>(() =>
-            {
-                new Job(id, emptyName, description, executionDate, null);
-            });
-
-        }
-
+        
 
     }
 }

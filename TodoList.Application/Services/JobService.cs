@@ -12,13 +12,12 @@ namespace TodoList.Application.Services
 
         public JobService(IJobRepository jobRepository)
         {
-            _jobRepository = jobRepository;
+             _jobRepository = jobRepository;
         }
 
         public async Task CreateJobAync(Job job)
-        {
-            await _jobRepository.CreateJobAync(job);
-        }
+           => await _jobRepository.CreateJobAync(job);
+        
 
         public async Task DeleteJobAsync(int? id)
         {
@@ -27,20 +26,17 @@ namespace TodoList.Application.Services
 
         }
 
-        public Task<IEnumerable<Job>> GetAllJobAsync()
-        {
-            return  _jobRepository.GetAllJobAsync();
-        }
+        public async Task<IEnumerable<Job>> GetAllJobAsync()
+            => await _jobRepository.GetAllJobAsync();
+        
 
-        public Task<Job> GetJobByIdAsync(int? id)
-        {
-            return _jobRepository.GetJobByIdAsync(id);
-        }
+        public async Task<Job> GetJobByIdAsync(int? id)
+           =>  await _jobRepository.GetJobByIdAsync(id);
+        
 
-        public Task UpdateJobAsync(Job job)
-        {
-            return _jobRepository.UpdateJobAsync(job);
+        public async Task UpdateJobAsync(Job job)
+            => await _jobRepository.UpdateJobAsync(job);
 
-        }
+        
     }
 }

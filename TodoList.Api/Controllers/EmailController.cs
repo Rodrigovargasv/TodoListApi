@@ -23,7 +23,7 @@ namespace TodoList.Api.Controllers
         {
             try
             {
-                var emailId = _emailService.GetEmailByIdAsync(id);
+                var emailId = await _emailService.GetEmailByIdAsync(id);
 
                 if (emailId == null)
                     return BadRequest();
@@ -51,8 +51,6 @@ namespace TodoList.Api.Controllers
                     await _emailService.UpdateEmailAsync(email);
                 else
                     return BadRequest();
-
-
 
                 return Ok(email);
             }
