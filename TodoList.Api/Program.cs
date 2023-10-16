@@ -21,9 +21,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("EnableCORS", builder =>
     {
-        builder.WithOrigins("http://localhost:3000", "https://todo-list-web-nine.vercel.app")
+        builder.WithOrigins("https://todo-list-web-nine.vercel.app")
         .AllowAnyHeader()
-        .AllowAnyMethod();
+        .AllowAnyMethod()
+        .AllowAnyOrigin();
     });
 });
 
@@ -37,7 +38,6 @@ builder.WebHost.UseKestrel(options =>
 
 
 var app = builder.Build();
-
 
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
