@@ -21,7 +21,7 @@ namespace TodoList.Application.Services
 
         public async Task DeleteJobAsync(int? id)
         {
-            var jobbId = _jobRepository.GetJobByIdAsync(id).Result;
+            var jobbId = await _jobRepository.GetJobByIdAsync(id);
             await _jobRepository.DeleteJobAsync(jobbId);
 
         }
