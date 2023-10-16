@@ -16,6 +16,7 @@ builder.Services.AddServices(builder.Configuration);
 
 builder.Services.AddControllers();
 
+// Adicionar serviço de política de acesso a Api.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("EnableCORS", builder =>
@@ -25,6 +26,16 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod();
     });
 });
+
+
+// Adiciona configuração do kestrel, onde a api escutará nas portas 5010 para http e 5011 para https.
+builder.WebHost.UseKestrel(options =>
+{
+    options.ListenAnyIP(5010);
+    options.ListenAnyIP(5011, listenOptions => listenOptions.UseHttps());
+});
+
+
 var app = builder.Build();
 
 

@@ -24,7 +24,7 @@ namespace TodoList.Infra.Ioc
             // Obter os dados de envio de email do appsettings
             services.Configure<EmailSetting>(configuration.GetSection("EmailSettings"));
             services.AddScoped<EmailSetting>();
-          
+
             // habilita sistema agenda envios dos emails
             services.AddHangfire(x => x.UseMemoryStorage());
             services.AddHangfireServer();
@@ -42,8 +42,10 @@ namespace TodoList.Infra.Ioc
             services.AddScoped<EmailService>();
 
 
+
+
+
             return services;
         }
-
     }
 }
