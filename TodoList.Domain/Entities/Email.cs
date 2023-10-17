@@ -12,7 +12,8 @@ namespace TodoList.Domain.Entities
             ValidationDomainEmail(emailSend);
         }
 
-        public int Id { get; } 
+        public int Id { get; private set; }
+
         public string? EmailSend {get; private set;}
 
 

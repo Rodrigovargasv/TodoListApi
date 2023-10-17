@@ -1,7 +1,4 @@
 using Hangfire;
-using Microsoft.Extensions.Options;
-using System.Net.Mail;
-using TodoList.Domain.Entities;
 using TodoList.Infra.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,19 +25,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-
-// Adiciona configuração do kestrel, onde a api escutará nas portas 5010 para http e 5011 para https.
-builder.WebHost.UseKestrel(options =>
-{
-    options.ListenAnyIP(5010);
-    options.ListenAnyIP(5011, listenOptions => listenOptions.UseHttps());
-});
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 
 var app = builder.Build();
-
-
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -54,6 +42,9 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 app.UseCors("EnableCORS");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 
 app.Run();

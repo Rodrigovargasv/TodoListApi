@@ -7,7 +7,7 @@ using TodoList.Infra.Data.Context;
 
 namespace TodoList.Infra.Data.Repository
 {
-    public class EmailRepository : IEmailRespository
+    public class EmailRepository : IEmailRepository
     {
         private readonly ApplicationDbContext _context;
 

@@ -1,6 +1,7 @@
 ﻿
 using Hangfire;
 using Hangfire.MemoryStorage;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,18 +33,16 @@ namespace TodoList.Infra.Ioc
 
             services.AddScoped<IJobRepository, JobRepository>();
             services.AddScoped<IJobService, JobService>();
-            services.AddScoped<IEmailRespository, EmailRepository>();
+            services.AddScoped<IEmailRepository, EmailRepository>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ISendEmail, SendEmailService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
 
 
             services.AddScoped<JobService>();
             services.AddScoped<SendEmailService>();
             services.AddScoped<EmailService>();
-
-
-
-
 
             return services;
         }

@@ -8,9 +8,9 @@ namespace TodoList.Application.Services
     public class EmailService : IEmailService
     {
 
-        private readonly IEmailRespository _email;
+        private readonly IEmailRepository _email;
 
-        public EmailService(IEmailRespository email)
+        public EmailService(IEmailRepository email)
         {
             _email = email;
         }
