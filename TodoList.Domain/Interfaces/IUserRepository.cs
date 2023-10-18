@@ -15,8 +15,12 @@ namespace TodoList.Domain.Interfaces
         Task<User> UpdateUser(User user);
 
         Task DeleteUser(User User);
-        
 
-        
+        Task<User> GetLoginAndPassWord(string userName, string password);
+
+        Task<User> GetLoginAndEmail(string userName, string email);
+
+
+
     }
 }

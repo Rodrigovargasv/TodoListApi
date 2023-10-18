@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Application.Interfaces;
 using TodoList.Domain.Entities;
@@ -18,6 +19,7 @@ namespace TodoList.Api.Controllers
         }
 
 
+        [Authorize(Roles = "commonUser, admin")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetEmailById(int id) 
         {
@@ -40,8 +42,9 @@ namespace TodoList.Api.Controllers
             
         }
 
+        [Authorize(Roles = "commonUser, admin")]
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateEmail(int id, [FromBody] Email email)
+        public async Task<IActionResult> UpdateEmail(int id, [FromBody] EmailUser email)
         {
 
 

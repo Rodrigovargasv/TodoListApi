@@ -5,8 +5,9 @@ namespace TodoList.Domain.Interfaces
 {
     public interface IEmailRepository
     {
-        Task<Email> GetEmailByIdAsync(int? id);
-        Task<Email> UpdateEmailAsync(Email email);
+        Task<EmailUser> GetEmailByIdAsync(int? id);
+        Task<EmailUser> UpdateEmailAsync(EmailUser email);
+    
     
     }
 }

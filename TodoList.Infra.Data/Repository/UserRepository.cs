@@ -26,16 +26,16 @@ namespace TodoList.Infra.Data.Repository
         {
             _context.Remove(user);
             await _context.SaveChangesAsync();
-            
+
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
             => await _context.Users.OrderBy(x => x.Id).ToListAsync();
-        
+
 
         public async Task<User> GetUserById(int id)
             => await _context.Users.FindAsync(id);
-        
+
 
         public async Task<User> UpdateUser(User user)
         {
@@ -43,5 +43,13 @@ namespace TodoList.Infra.Data.Repository
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public async Task<User> GetLoginAndPassWord(string userName, string password)
+            => await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName && x.Password == password);
+
+        public async Task<User> GetLoginAndEmail(string userName, string email)
+            => await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName && x.Email == email);
+
+
     }
 }

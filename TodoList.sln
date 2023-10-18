@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Infra.Ioc", "TodoL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Api", "TodoList.Api\TodoList.Api.csproj", "{D59A664E-7598-4EB1-A652-7F89B9181DAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Test", "TodoList.Test\TodoList.Test.csproj", "{4E259ED3-6A62-4033-9731-18FA5B704FAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Test", "TodoList.Test\TodoList.Test.csproj", "{4E259ED3-6A62-4033-9731-18FA5B704FAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

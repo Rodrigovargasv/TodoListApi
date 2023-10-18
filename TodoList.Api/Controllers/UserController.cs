@@ -1,4 +1,5 @@
 ﻿using Hangfire.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Application.Interfaces;
@@ -12,12 +13,18 @@ namespace TodoList.Api.Controllers
     {
 
         private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
 
-        public UserController(IUserService userService)
+
+        public UserController(IUserService userService, IEmailService emailService)
         {
             _userService = userService;
+            _emailService = emailService;
+           
         }
 
+        [Authorize(Roles = "commonUser, admin")]
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAppUsersAsync()
         {
@@ -37,7 +44,7 @@ namespace TodoList.Api.Controllers
             }
         }
 
-
+        [Authorize(Roles = "commonUser, admin")]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<User>> GetUserByIdAsync(int id)
         {
@@ -57,6 +64,7 @@ namespace TodoList.Api.Controllers
 
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ActionResult<User>> CreateUserAsync([FromBody] User user)
         {
@@ -65,7 +73,13 @@ namespace TodoList.Api.Controllers
                 if (user is null || string.IsNullOrWhiteSpace(user.ToString()))
                     return BadRequest();
 
+                var userId = await _userService.GetLoginAndEmailAync(user.UserName, user.Email);
+        
+                if (userId is null)
+                   return BadRequest("Já existe um usuário com estás informações de Nome ou Email");
+
                 await _userService.CreateUserAsync(user);
+          
 
                 return new CreatedAtRouteResult("GetUserByIdAsync", new { id = user.Id, user });
 
@@ -77,6 +91,7 @@ namespace TodoList.Api.Controllers
 
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut]
         public async Task<ActionResult<User>> UpdateUserAsync(int id, [FromBody] User user)
         {
@@ -93,6 +108,8 @@ namespace TodoList.Api.Controllers
             return Ok(userId);
 
         }
+
+        [Authorize(Roles = "admin")]
 
         [HttpDelete]
         public async Task<ActionResult<User>> DeleteUserByIDAsync(int id)

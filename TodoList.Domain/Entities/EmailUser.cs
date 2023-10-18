@@ -4,17 +4,17 @@ using TodoList.Domain.Validation;
 
 namespace TodoList.Domain.Entities
 {
-    public class Email
+    public class EmailUser
     {
-        public Email(int id, string? emailSend)
+        public EmailUser(int id, string? email)
         {
             Id = id;
-            ValidationDomainEmail(emailSend);
+            ValidationDomainEmail(email);
         }
 
         public int Id { get; private set; }
 
-        public string? EmailSend {get; private set;}
+        public string? Email {get; private set;}
 
 
         private bool EmailIsValid(string email)
@@ -36,7 +36,7 @@ namespace TodoList.Domain.Entities
             
             DomainExceptionValidation.When(EmailIsValid(email) is false, "O email não está em um formato válido");
 
-            EmailSend = email;
+            Email = email;
 
 
         }

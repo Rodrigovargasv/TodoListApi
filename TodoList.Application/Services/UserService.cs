@@ -30,5 +30,12 @@ namespace TodoList.Application.Services
 
         public Task<User> UpdateUserAsync(User user)
             => _userRepository.UpdateUser(user);
+
+        public async Task<User> GetLoginAndPassWordAsync(string userName, string password)
+            => await _userRepository.GetLoginAndPassWord(userName, password);
+
+        public async Task<User> GetLoginAndEmailAync(string userName, string email)
+            => await _userRepository.GetLoginAndEmail(userName, email);
+
     }
 }

@@ -15,11 +15,11 @@ namespace TodoList.Application.Services
             _email = email;
         }
 
-        public async Task<Email> GetEmailByIdAsync(int? id)
+        public async Task<EmailUser> GetEmailByIdAsync(int? id)
            => await _email.GetEmailByIdAsync(id);
         
 
-        public async Task<Email> UpdateEmailAsync(Email email)
+        public async Task<EmailUser> UpdateEmailAsync(EmailUser email)
             => await _email.UpdateEmailAsync(email);
         
             

@@ -1,10 +1,13 @@
 ﻿
 using Hangfire;
 using Hangfire.MemoryStorage;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using TodoList.Application.Interfaces;
 using TodoList.Application.Services;
 using TodoList.Domain.Entities;
@@ -43,6 +46,30 @@ namespace TodoList.Infra.Ioc
             services.AddScoped<JobService>();
             services.AddScoped<SendEmailService>();
             services.AddScoped<EmailService>();
+         
+
+
+            var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+
+
+                    };
+                });
+
 
             return services;
         }

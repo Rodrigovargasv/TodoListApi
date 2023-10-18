@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 using TodoList.Application.Interfaces;
 using TodoList.Domain.Entities;
 
@@ -15,16 +17,21 @@ namespace TodoList.Api.Controllers
         public JobController(IJobService jobService)
         {
             _jobService = jobService;
+
+          
         }
 
 
 
+        [AllowAnonymous]
         [HttpGet("/testeApi")]
         public async Task<ActionResult> TesteApi()
         {
             return Ok($"Teste conexão com a Api: {DateTime.Now.ToString("f")}");
 
         }
+
+        [Authorize(Roles = "commonUser, admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Job>>> GetAllJobs()
         {
@@ -38,6 +45,7 @@ namespace TodoList.Api.Controllers
 
         }
 
+        [Authorize(Roles = "commonUser, admin")]
         [HttpGet("{id}", Name = "GetJob")]
         public async Task<ActionResult> GetJob(int id)
         {
@@ -49,6 +57,7 @@ namespace TodoList.Api.Controllers
             return Ok(jobId);
         }
 
+        [Authorize(Roles = "commonUser, admin")]
         [HttpPost]
         public async Task<ActionResult> CreateJob([FromBody] Job job)
         {
@@ -62,6 +71,7 @@ namespace TodoList.Api.Controllers
 
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut("{id:int}")]
         public async Task<ActionResult> UpdateJob(int id, [FromBody] Job job)
         {
@@ -79,6 +89,7 @@ namespace TodoList.Api.Controllers
             return Ok(job);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<Job>> DeleteJob(int id)
         {

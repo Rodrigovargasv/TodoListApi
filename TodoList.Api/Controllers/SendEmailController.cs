@@ -7,6 +7,7 @@ using TodoList.Application.Interfaces;
 using System.Threading.Tasks;
 using TodoList.Domain.Entities;
 using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TodoList.Api.Controllers
 {
@@ -31,6 +32,7 @@ namespace TodoList.Api.Controllers
         }
 
 
+        [Authorize(Roles = "commonUser, admin")]
         [HttpPost]
         public async Task<IActionResult> SendEmail(int jobId, int timeSendEmail, [FromBody] DataEmail emailModel)
         {
@@ -39,7 +41,7 @@ namespace TodoList.Api.Controllers
             {
                 var email = await _emailService.GetEmailByIdAsync(1);
 
-                if (string.IsNullOrEmpty(email.EmailSend))
+                if (string.IsNullOrEmpty(email.Email))
                 {
                     return NotFound("Email não encontrado");
                 }
@@ -57,7 +59,7 @@ namespace TodoList.Api.Controllers
                 TimeSpan delay = differentTime.Subtract(TimeSpan.FromMinutes(timeSendEmail));
 
                 BackgroundJob.Schedule(() => 
-                _sendEmail.SendEmailAsync(email.EmailSend, emailModel.Subject, emailModel.Body),
+                _sendEmail.SendEmailAsync(email.Email, emailModel.Subject, emailModel.Body),
                 delay);
 
      

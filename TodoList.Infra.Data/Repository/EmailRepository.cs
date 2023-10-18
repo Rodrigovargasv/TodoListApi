@@ -17,17 +17,19 @@ namespace TodoList.Infra.Data.Repository
         }
 
 
-        public async Task<Email> GetEmailByIdAsync(int? id)
+        public async Task<EmailUser> GetEmailByIdAsync(int? id)
         {
             return await _context.Emails.FindAsync(id);
         }
 
-        public async Task<Email> UpdateEmailAsync(Email email)
+        public async Task<EmailUser> UpdateEmailAsync(EmailUser email)
         {
             _context.Emails.Update(email);
             await _context.SaveChangesAsync();
             return email;
 
         }
+
+       
     }
 }

@@ -12,7 +12,10 @@ namespace TodoList.Application.Interfaces
         Task<User> CreateUserAsync(User user);
 
         Task<User> UpdateUserAsync(User user);
-
         Task DeleteUserAsync(User user);
+
+        Task<User> GetLoginAndPassWordAsync(string userName, string password);
+
+        Task<User> GetLoginAndEmailAync(string userName, string email);
     }
 }

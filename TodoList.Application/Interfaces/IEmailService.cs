@@ -6,8 +6,8 @@ namespace TodoList.Application.Interfaces
     public interface IEmailService
     {
 
-        Task<Email> GetEmailByIdAsync(int? id);
-        Task<Email> UpdateEmailAsync(Email email);
+        Task<EmailUser> GetEmailByIdAsync(int? id);
+        Task<EmailUser> UpdateEmailAsync(EmailUser email);
 
     }
 }
