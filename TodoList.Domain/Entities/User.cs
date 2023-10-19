@@ -20,6 +20,7 @@ namespace TodoList.Domain.Entities
 
             ValidationAddDomainUser(userName, password, email);    
         }
+      
 
 
         public int Id { get; private set; }
@@ -45,6 +46,12 @@ namespace TodoList.Domain.Entities
             }
         }
 
+
+        public void UpdatePasswordUser(string newPassword)
+        {
+            ValidationAddDomainUser(newPassword);
+            Password = newPassword;
+        }
 
 
         public void ValidationAddDomainUser(string userName, string password, string email)
@@ -76,7 +83,21 @@ namespace TodoList.Domain.Entities
 
 
         }
-        
 
+        public void ValidationAddDomainUser(string password)
+        {
+            // Validação de senha.
+            string regexPattern = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$!%^&*])[A-Za-z\d@#$!%^&*]{8,}$";
+            bool isPassaWordValid = Regex.IsMatch(password, regexPattern);
+
+            DomainExceptionValidation.When(string.IsNullOrEmpty(password), "O campo senha é de preenchimento obrigatório");
+
+            DomainExceptionValidation.When(!isPassaWordValid,
+                "A senha deve conter pelo menos 1 letra maiúscula, 1 letra minúscula, 1 caractere especial e 1 número.");
+
+            DomainExceptionValidation.When(password.Length <= 8, "A senha dever contér no mínimo 8 caracteres");
+            DomainExceptionValidation.When(password.Length >= 80, "A senha de conter no maxímo 80 caracteres");
+
+        }
     }
 }

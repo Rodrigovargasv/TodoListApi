@@ -41,12 +41,22 @@ namespace TodoList.Infra.Ioc
             services.AddScoped<ISendEmail, SendEmailService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRecoveryPasswordUserRepository, RecoveryPasswordRepository>();
+            services.AddScoped<IRecoveryPasswordUserService, RecoveryPassawordUserService>();
+
 
 
             services.AddScoped<JobService>();
             services.AddScoped<SendEmailService>();
             services.AddScoped<EmailService>();
-         
+            services.AddScoped<RecoveryPassawordUserService>();
+            services.AddScoped<GenerationCodeRecoveryService>();
+
+
+            // faz o armazenamento de dados em cache.
+            services.AddMemoryCache();
+
+
 
 
             var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);

@@ -24,7 +24,6 @@ namespace TodoList.Api.Controllers
         }
 
         [Authorize(Roles = "commonUser, admin")]
-        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAppUsersAsync()
         {
@@ -44,6 +43,8 @@ namespace TodoList.Api.Controllers
             }
         }
 
+
+        
         [Authorize(Roles = "commonUser, admin")]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<User>> GetUserByIdAsync(int id)
