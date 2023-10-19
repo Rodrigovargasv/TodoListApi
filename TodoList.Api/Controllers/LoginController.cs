@@ -21,6 +21,7 @@ namespace TodoList.Api.Controllers
             _userService = userService;
         }
 
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<dynamic>> AuthenticateAsync(string userName, string password)
@@ -36,7 +37,7 @@ namespace TodoList.Api.Controllers
 
             var token = TokenService.GenerateToken(user);
 
-            return token;
+            return Ok(token);
         }
 
 
