@@ -48,7 +48,7 @@ namespace TodoList.Infra.Data.Repository
             => await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName && x.Password == password);
 
         public async Task<User> GetLoginAndEmail(string userName, string email)
-            => await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName && x.Email == email);
+            => await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName || x.Email == email);
 
 
     }

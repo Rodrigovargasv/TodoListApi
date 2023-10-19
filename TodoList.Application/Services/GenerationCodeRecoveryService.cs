@@ -27,7 +27,9 @@ namespace TodoList.Application.Services
             CreateDate = DateTime.Now;
             Code = RandomCodeGeneration();
 
+            // armazena código temporário por 2 minutos
             _memoryCache.Set("CodigoTemporario", Code, TimeSpan.FromMinutes(ValidationTimeInMinutes));
+
             return Code;
         }
 
@@ -43,6 +45,8 @@ namespace TodoList.Application.Services
 
                 if (PassMinutes < 0 || code != codeCache || code is null)
                     return true;
+
+                return true;
             }
             
 

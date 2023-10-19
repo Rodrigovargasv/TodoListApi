@@ -28,7 +28,7 @@ namespace TodoList.Api.Controllers
             var user = await _userService.GetLoginAndPassWordAsync(userName, password);
     
             if (user is null)
-                return NotFound("Usuário inválido");
+                return NotFound("Usuário ou senha inválido ");
 
             if (user.IsActive == false)
                 return NotFound("Usuário está inativo ou inválido");

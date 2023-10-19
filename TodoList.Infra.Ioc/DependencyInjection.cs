@@ -2,7 +2,6 @@
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +13,8 @@ using TodoList.Domain.Entities;
 using TodoList.Domain.Interfaces;
 using TodoList.Infra.Data.Context;
 using TodoList.Infra.Data.Repository;
+using AutoMapper;
+using TodoList.Application.Mappings;
 
 namespace TodoList.Infra.Ioc
 {
@@ -32,7 +33,7 @@ namespace TodoList.Infra.Ioc
             // habilita sistema agenda envios dos emails
             services.AddHangfire(x => x.UseMemoryStorage());
             services.AddHangfireServer();
-
+            services.AddAutoMapper(typeof(MappingsEntityDTOs));
 
             services.AddScoped<IJobRepository, JobRepository>();
             services.AddScoped<IJobService, JobService>();
@@ -43,7 +44,6 @@ namespace TodoList.Infra.Ioc
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRecoveryPasswordUserRepository, RecoveryPasswordRepository>();
             services.AddScoped<IRecoveryPasswordUserService, RecoveryPassawordUserService>();
-
 
 
             services.AddScoped<JobService>();
@@ -57,9 +57,8 @@ namespace TodoList.Infra.Ioc
             services.AddMemoryCache();
 
 
-
-
             var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -75,11 +74,11 @@ namespace TodoList.Infra.Ioc
                         IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
                         ValidateAudience = false
-
-
                     };
                 });
 
+
+           
 
             return services;
         }

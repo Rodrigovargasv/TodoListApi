@@ -1,7 +1,9 @@
-﻿using Hangfire.Common;
+﻿using AutoMapper;
+using Hangfire.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TodoList.Application.DTOs;
 using TodoList.Application.Interfaces;
 using TodoList.Domain.Entities;
 
@@ -14,16 +16,18 @@ namespace TodoList.Api.Controllers
 
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
+        private readonly IMapper _mapper;
 
 
-        public UserController(IUserService userService, IEmailService emailService)
+        public UserController(IUserService userService, IEmailService emailService, IMapper mapper)
         {
             _userService = userService;
             _emailService = emailService;
+            _mapper = mapper;
            
         }
 
-        [Authorize(Roles = "commonUser, admin")]
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAppUsersAsync()
         {
@@ -45,7 +49,7 @@ namespace TodoList.Api.Controllers
 
 
         
-        [Authorize(Roles = "commonUser, admin")]
+        [Authorize(Roles = "admin")]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<User>> GetUserByIdAsync(int id)
         {
@@ -76,7 +80,7 @@ namespace TodoList.Api.Controllers
 
                 var userId = await _userService.GetLoginAndEmailAync(user.UserName, user.Email);
         
-                if (userId is null)
+                if (userId != null)
                    return BadRequest("Já existe um usuário com estás informações de Nome ou Email");
 
                 await _userService.CreateUserAsync(user);
@@ -94,19 +98,26 @@ namespace TodoList.Api.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPut]
-        public async Task<ActionResult<User>> UpdateUserAsync(int id, [FromBody] User user)
+        public async Task<ActionResult<UserDto>> UpdateUserAsync(int id, [FromBody] UserDto userDto )
         {
 
             var userId = await _userService.GetUserByIdAsync(id);
 
             if (userId is null)
                 return NotFound($"Não foi encontrando o usuario com id: {id}");
-            if (user is null)
+            if (userDto is null)
                 return BadRequest();
 
-            await _userService.UpdateUserAsync(user);
+            if (string.IsNullOrEmpty(userDto.UserName) && string.IsNullOrEmpty(userDto.Password)
+                && string.IsNullOrEmpty(userDto.Email))
+                   return BadRequest("Dados inválidos.");
 
-            return Ok(userId);
+            userId.UpdateUser(userDto.UserName, userDto.Email, userDto.Password, userDto.IsActive);
+
+            await _userService.UpdateUserAsync(userId);
+            var updatedUserDto = _mapper.Map<UserDto>(userId);
+
+            return Ok(updatedUserDto);
 
         }
 
@@ -122,7 +133,7 @@ namespace TodoList.Api.Controllers
 
             await _userService.DeleteUserAsync(userId);
 
-            return Ok(userId);
+            return Ok("Dados atualizado com sucesso!");
         }
 
     }
