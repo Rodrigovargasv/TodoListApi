@@ -26,18 +26,22 @@ namespace TodoList.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<dynamic>> AuthenticateAsync(string userName, string password)
         {
-            var user = await _userService.GetLoginAndPassWordAsync(userName, password);
-    
-            if (user is null)
-                return NotFound("Usuário ou senha inválido ");
+            try
+            {
+                var user = await _userService.GetLoginAndPassWordAsync(userName, password);
 
-            if (user.IsActive == false)
-                return NotFound("Usuário está inativo ou inválido");
+                if (user is null)
+                    return NotFound("Usuário ou senha inválido ");
+
+                if (user.IsActive == false)
+                    return NotFound("Usuário está inativo ou inválido");
 
 
-            var token = TokenService.GenerateToken(user);
+                var token = TokenService.GenerateToken(user);
 
-            return Ok(token);
+                return Ok(token);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
 

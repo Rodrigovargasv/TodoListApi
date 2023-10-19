@@ -36,12 +36,17 @@ namespace TodoList.Api.Controllers
         public async Task<ActionResult<IEnumerable<Job>>> GetAllJobs()
         {
 
-            var jobs = await _jobService.GetAllJobAsync();
+            try
+            {
+                var jobs = await _jobService.GetAllJobAsync();
 
-            if (jobs is null)
-                return NotFound();
+                if (jobs is null)
+                    return NotFound();
 
-            return Ok(jobs);
+                return Ok(jobs);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+
 
         }
 
@@ -49,12 +54,16 @@ namespace TodoList.Api.Controllers
         [HttpGet("{id}", Name = "GetJob")]
         public async Task<ActionResult> GetJob(int id)
         {
-            var jobId = await _jobService.GetJobByIdAsync(id);
+            try
+            {
+                var jobId = await _jobService.GetJobByIdAsync(id);
 
-            if (jobId is null)
-                return NotFound();
+                if (jobId is null)
+                    return NotFound();
 
-            return Ok(jobId);
+                return Ok(jobId);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
         [Authorize(Roles = "commonUser, admin")]
@@ -62,12 +71,16 @@ namespace TodoList.Api.Controllers
         public async Task<ActionResult> CreateJob([FromBody] Job job)
         {
 
-            if (job is null || string.IsNullOrWhiteSpace(job.ToString()))
-                return BadRequest();
+            try
+            {
+                if (job is null || string.IsNullOrWhiteSpace(job.ToString()))
+                    return BadRequest();
 
-            await _jobService.CreateJobAync(job);
+                await _jobService.CreateJobAync(job);
 
-            return new CreatedAtRouteResult("GetJob", new { id = job.Id }, job);
+                return new CreatedAtRouteResult("GetJob", new { id = job.Id }, job);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
 
         }
 
@@ -75,33 +88,41 @@ namespace TodoList.Api.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult> UpdateJob(int id, [FromBody] Job job)
         {
-           
-            if (id != job.Id)
-                return BadRequest();
 
-            if (job is null)
-                return BadRequest();
+            try
+            {
+                if (id != job.Id)
+                    return BadRequest();
+
+                if (job is null)
+                    return BadRequest();
 
 
-            await _jobService.UpdateJobAsync(job);
-            
+                await _jobService.UpdateJobAsync(job);
 
-            return Ok(job);
+
+                return Ok(job);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
         [Authorize(Roles = "admin")]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<Job>> DeleteJob(int id)
         {
-            var getJob = await _jobService.GetJobByIdAsync(id);
+            try
+            {
+                var getJob = await _jobService.GetJobByIdAsync(id);
 
-            if (getJob is null)
-                return NotFound();
+                if (getJob is null)
+                    return NotFound();
 
 
-            await _jobService.DeleteJobAsync(id);
+                await _jobService.DeleteJobAsync(id);
 
-            return Ok(getJob);
+                return Ok(getJob);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
     }
 }
