@@ -45,8 +45,6 @@ namespace TodoList.Application.Services
 
                 if (PassMinutes < 0 || code != codeCache || code is null)
                     return true;
-
-                return true;
             }
             
 

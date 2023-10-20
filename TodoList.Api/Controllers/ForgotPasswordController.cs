@@ -72,7 +72,7 @@ namespace TodoList.Api.Controllers
             try
             {
 
-                if (_generationCodeRecoveryService.VerifyCodeTemporary(code) is false)
+                if (_generationCodeRecoveryService.VerifyCodeTemporary(code) is true)
                     return BadRequest("O codigo invalído ou expirado.");
 
                 // Busca o email armazenado em cache e seta na variavel emailCache
