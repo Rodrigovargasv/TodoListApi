@@ -20,14 +20,11 @@ namespace TodoList.Api.Controllers
         private readonly IEmailService _emailService;
 
 
-
         public SendEmailController(ISendEmail sendEmail, IJobService jobService, IEmailService emailService)
         {
             _sendEmail = sendEmail;
             _jobService = jobService;
             _emailService = emailService;
-
-
 
         }
 

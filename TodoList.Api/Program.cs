@@ -1,5 +1,4 @@
 using Hangfire;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using TodoList.Infra.Ioc;
 
@@ -9,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-//builder.Services.AddSwaggerGen();
 
+// Adicionado o serviço do Swagger para que ele aceite autenticação com JWT bearer.
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoListApi", Version = "v1" });
@@ -60,7 +59,7 @@ builder.Services.AddCors(options =>
 });
 
 
-
+// Altera o formato de data e hora do banco de dados PostgreSql
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 
@@ -73,12 +72,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Define configuração para inicialização do hangFire.
 app.UseHangfireDashboard();
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+// Define a configuração de políticas de acesso a api.
 app.UseCors("EnableCORS");
 
+// Define a confgiuração para autenticação e autorização da Api.
 app.UseAuthentication();
 app.UseAuthorization();
 

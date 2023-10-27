@@ -25,9 +25,9 @@ namespace TodoList.Domain.Entities
 
         public int Id { get; private set; }
 
-        public string? UserName { get; private set; }
-        public string? Email { get; private set; }
-        public string? Password { get; private set; }
+        public string UserName { get; private set; }
+        public string Email { get; private set; }
+        public string Password { get; private set; }
         public RoleUser Role { get; private set; }
         public bool IsActive { get; private set; }
 
@@ -78,12 +78,8 @@ namespace TodoList.Domain.Entities
 
 
             else
-            {
                 IsActive = isActive;
-            }
-
-
-
+          
         }
 
         public void ValidationAddDomainUser(string userName, string password, string email)
