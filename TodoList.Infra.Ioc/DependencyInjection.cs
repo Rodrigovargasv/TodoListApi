@@ -48,11 +48,6 @@ namespace TodoList.Infra.Ioc
             services.AddScoped<IRecoveryPasswordUserRepository, RecoveryPasswordRepository>();
             services.AddScoped<IRecoveryPasswordUserService, RecoveryPassawordUserService>();
 
-
-            services.AddScoped<JobService>();
-            services.AddScoped<SendEmailService>();
-            services.AddScoped<EmailService>();
-            services.AddScoped<RecoveryPassawordUserService>();
             services.AddScoped<GenerationCodeRecoveryService>();
 
 

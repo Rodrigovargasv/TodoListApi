@@ -9,11 +9,11 @@ namespace TodoList.Application.Services
     public class SendEmailService : ISendEmail
     {
 
-        private readonly JobService _jobService;
-        private readonly EmailService _emailService;
+        private readonly IJobService _jobService;
+        private readonly IEmailService _emailService;
         private readonly EmailSetting _emailSetting;
 
-        public SendEmailService(JobService jobService, EmailService emailService, IOptions<EmailSetting> emailSettings)
+        public SendEmailService(IJobService jobService, IEmailService emailService, IOptions<EmailSetting> emailSettings)
         {
             _jobService = jobService;
             _emailService = emailService;

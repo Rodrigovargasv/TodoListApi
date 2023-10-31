@@ -15,6 +15,7 @@ namespace TodoList.Api.Controllers
         private readonly IRecoveryPasswordUserService _recoveryPasswordUserService;
 
         private readonly GenerationCodeRecoveryService _generationCodeRecoveryService;
+       
 
         private readonly ISendEmail _sendEmail;
 

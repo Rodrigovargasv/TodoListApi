@@ -26,10 +26,9 @@ namespace TodoList.Api.Controllers
         [AllowAnonymous]
         [HttpGet("/testeApi")]
         public async Task<ActionResult> TesteApi()
-        {
-            return Ok($"Teste conexão com a Api: {DateTime.Now.ToString("f")}");
+            =>  Ok($"Teste conexão com a Api: {DateTime.Now.ToString("f")}");
 
-        }
+  
 
         [Authorize(Roles = "commonUser, admin")]
         [HttpGet]
