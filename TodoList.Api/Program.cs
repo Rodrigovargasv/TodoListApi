@@ -8,34 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 
-
-// Adiconando o serviço de injeção de depêndencia.
-builder.Services.AddServices(builder.Configuration);
-
-
-// Adicionar serviço de política de acesso a Api.
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("EnableCORS", builder =>
-    {
-        builder
-         .AllowAnyOrigin()
-         .AllowAnyMethod()
-         .AllowAnyHeader();
-
-
-
-    });
-});
-
-
-// Altera o formato de data e hora do banco de dados PostgreSql
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
+// Adicona os serviços de injeção de depêndencia.
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-// Define configuração para inicialização do hangFire.
+//Configuração de middleware: hangFire.
 app.UseHangfireDashboard();
 app.UseHttpsRedirection();
 
