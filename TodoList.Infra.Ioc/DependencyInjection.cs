@@ -13,9 +13,9 @@ using TodoList.Domain.Entities;
 using TodoList.Domain.Interfaces;
 using TodoList.Infra.Data.Context;
 using TodoList.Infra.Data.Repository;
-using AutoMapper;
 using TodoList.Application.Mappings;
-using System.Reflection;
+using TodoList.Domain.Validation;
+using Microsoft.OpenApi.Models;
 
 namespace TodoList.Infra.Ioc
 {
@@ -31,13 +31,15 @@ namespace TodoList.Infra.Ioc
             services.Configure<EmailSetting>(configuration.GetSection("EmailSettings"));
             services.AddScoped<EmailSetting>();
 
-          
-
-            // habilita sistema agenda envios dos emails
+            #region habilita sistema agenda envios dos emails
             services.AddHangfire(x => x.UseMemoryStorage());
             services.AddHangfireServer();
+            #endregion
+
+
             services.AddAutoMapper(typeof(MappingsEntityDTOs));
 
+            #region serviço
             services.AddScoped<IJobRepository, JobRepository>();
             services.AddScoped<IJobService, JobService>();
             services.AddScoped<IEmailRepository, EmailRepository>();
@@ -49,13 +51,48 @@ namespace TodoList.Infra.Ioc
             services.AddScoped<IRecoveryPasswordUserService, RecoveryPassawordUserService>();
 
             services.AddScoped<GenerationCodeRecoveryService>();
+            services.AddScoped<JobValidation>();
+            services.AddTransient<TokenService>();
+            #endregion
 
 
             // faz o armazenamento de dados em cache.
             services.AddMemoryCache();
 
 
-            var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
+            #region Configurações do Swagger
+
+            // Adicionado o serviço de autenticação com JWT bearer.
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoListApi", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Insira 'Bearer' e um token JWT válido."
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+            });
+
 
             services.AddAuthentication(options =>
             {
@@ -66,17 +103,27 @@ namespace TodoList.Infra.Ioc
                 {
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
+
+
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
+                        //ValidateIssuerSigningKey = true,
                         ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateAudience = false,
+                        ValidateLifetime = true
                     };
                 });
 
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy("admin", p => p.RequireRole("admin"));
+                option.AddPolicy("commonUser", p => p.RequireRole("commonUser"));
 
-    
+            });
+           
+            #endregion
+
 
             return services;
         }

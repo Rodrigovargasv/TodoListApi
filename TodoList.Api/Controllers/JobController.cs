@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http.Headers;
 using TodoList.Application.Interfaces;
 using TodoList.Domain.Entities;
 
 namespace TodoList.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class JobController : ControllerBase
     {
@@ -18,20 +16,16 @@ namespace TodoList.Api.Controllers
         {
             _jobService = jobService;
 
-          
         }
 
-
-
         [AllowAnonymous]
-        [HttpGet("/testeApi")]
+        [HttpGet("testeApi")]
         public ActionResult TesteApi()
             =>  Ok($"Teste conexão com a Api: {DateTime.Now.ToString("f")}");
 
-  
 
         [Authorize(Roles = "commonUser, admin")]
-        [HttpGet]
+        [HttpGet("GetAllJobs")]
         public async Task<ActionResult<IEnumerable<Job>>> GetAllJobs()
         {
 
@@ -65,8 +59,9 @@ namespace TodoList.Api.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
+      
+        [HttpPost("CreateJob")]
         [Authorize(Roles = "commonUser, admin")]
-        [HttpPost]
         public async Task<ActionResult> CreateJob([FromBody] Job job)
         {
 
@@ -84,29 +79,25 @@ namespace TodoList.Api.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("{id:int}")]
+        [HttpPut("UpdateJob/{id:int}")]
         public async Task<ActionResult> UpdateJob(int id, [FromBody] Job job)
         {
 
             try
             {
-                if (id != job.Id)
+                
+                if (job is null || id != job.Id)
                     return BadRequest();
-
-                if (job is null)
-                    return BadRequest();
-
 
                 await _jobService.UpdateJobAsync(job);
 
-
                 return Ok(job);
             }
-            catch (Exception ex) { return BadRequest(ex.Message); }
+            catch { return NotFound("Tarefa não encontrada."); }
         }
 
         [Authorize(Roles = "admin")]
-        [HttpDelete("{id:int}")]
+        [HttpDelete("DeleteJob/{id:int}")]
         public async Task<ActionResult<Job>> DeleteJob(int id)
         {
             try

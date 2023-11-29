@@ -1,6 +1,4 @@
 ﻿
-
-using Newtonsoft.Json;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using TodoList.Domain.Enums;

@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 using TodoList.Application.Interfaces;
 using TodoList.Application.Services;
-using TodoList.Domain.Entities;
-using TodoList.Infra.Data.Repository;
-
 namespace TodoList.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -15,10 +10,12 @@ namespace TodoList.Api.Controllers
     {
 
         private readonly IUserService _userService;
+        private readonly TokenService _tokenService;
 
-        public LoginController(IUserService userService)
+        public LoginController(IUserService userService, TokenService tokenService)
         {
             _userService = userService;
+            _tokenService = tokenService;
         }
 
 
@@ -37,7 +34,7 @@ namespace TodoList.Api.Controllers
                     return NotFound("Usuário está inativo ou inválido");
 
 
-                var token = TokenService.GenerateToken(user);
+                var token = _tokenService.GenerateToken(user);
 
                 return Ok(token);
             }
