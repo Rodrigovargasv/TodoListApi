@@ -1,9 +1,5 @@
-﻿using AutoMapper;
-using Hangfire.Common;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TodoList.Application.DTOs;
 using TodoList.Application.Interfaces;
 using TodoList.Domain.Entities;
 
@@ -16,15 +12,14 @@ namespace TodoList.Api.Controllers
 
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
-        private readonly IMapper _mapper;
 
 
-        public UserController(IUserService userService, IEmailService emailService, IMapper mapper)
+
+        public UserController(IUserService userService, IEmailService emailService)
         {
             _userService = userService;
             _emailService = emailService;
-            _mapper = mapper;
-           
+
         }
 
         [Authorize(Roles = "admin")]
@@ -98,26 +93,48 @@ namespace TodoList.Api.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPut]
-        public async Task<ActionResult<UserDto>> UpdateUserAsync(int id, [FromBody] UserDto userDto )
+        public async Task<ActionResult<User>> UpdateUserAsync(int id, [FromBody] User user)
         {
 
             var userId = await _userService.GetUserByIdAsync(id);
 
+            var userExists = await _userService.GetLoginAndEmailAync(user.UserName, user.Email);
+
             if (userId is null)
                 return NotFound($"Não foi encontrando o usuario com id: {id}");
-            if (userDto is null)
+            if (user is null)
                 return BadRequest();
 
-            if (string.IsNullOrEmpty(userDto.UserName) && string.IsNullOrEmpty(userDto.Password)
-                && string.IsNullOrEmpty(userDto.Email))
-                   return BadRequest("Dados inválidos.");
+            if (userExists != null)
+                return BadRequest("Não foi possível atualizar o usuário, pois já existe um usuário com estes dados");
 
-            userId.UpdateUser(userDto.UserName, userDto.Email, userDto.Password, userDto.IsActive);
 
-            await _userService.UpdateUserAsync(userId);
-            var updatedUserDto = _mapper.Map<UserDto>(userId);
 
-            return Ok(updatedUserDto);
+            if (!string.IsNullOrEmpty(user.UserName))
+                userId.UserName = user.UserName;
+
+            if (!string.IsNullOrEmpty(user.Email))
+                userId.Email = user.Email;
+
+
+            if (!string.IsNullOrEmpty(user.Password))
+                userId.Password = user.Password;
+
+            if (!string.IsNullOrEmpty(user.Role.ToString()) && user.Role != 0)
+                userId.Role = user.Role;
+
+
+            try
+            {
+                await _userService.UpdateUserAsync(userId);
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+
+
+            return Ok(userId);
 
         }
 

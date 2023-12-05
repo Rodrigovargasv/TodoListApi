@@ -23,38 +23,34 @@ namespace TodoList.Application.Services
         public async Task SendEmailAsync(string email, string subject, string body)
         {
 
-            try
+
+            var emails = await _emailService.GetEmailByIdAsync(1);
+
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("TodoListApi", "Tarefa"));
+            message.To.Add(new MailboxAddress("", email));
+            message.Subject = subject;
+
+            var textPart = new TextPart("plain")
             {
-                var emails = await _emailService.GetEmailByIdAsync(1);
+                Text = body
+            };
 
-                var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("TodoListApi", "Tarefa"));
-                message.To.Add(new MailboxAddress("", email));
-                message.Subject = subject;
-
-                var textPart = new TextPart("plain")
-                {
-                    Text = body
-                };
-
-                message.Body = textPart;
-          
-
-                using (var client = new SmtpClient())
-                {
-                    await client.ConnectAsync(_emailSetting.SmtpServer, _emailSetting.Port, false);
-                    await client.AuthenticateAsync(_emailSetting.SenderEmail, _emailSetting.Password);
-
-                    await client.SendAsync(message);
-                    await client.DisconnectAsync(true);
+            message.Body = textPart;
 
 
-                }
-            }
-            catch (Exception ex)
+            using (var client = new SmtpClient())
             {
-                Console.WriteLine(ex.ToString());
+                await client.ConnectAsync(_emailSetting.SmtpServer, _emailSetting.Port, false);
+                await client.AuthenticateAsync(_emailSetting.SenderEmail, _emailSetting.Password);
+
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
+
+
             }
+
+
 
         }
     }

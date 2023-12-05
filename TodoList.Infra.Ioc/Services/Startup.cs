@@ -1,12 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TodoList.Application.Interfaces;
-using TodoList.Application.Mappings;
 using TodoList.Application.Services;
 using TodoList.Domain.Entities;
 using TodoList.Domain.Interfaces;
@@ -20,7 +14,7 @@ namespace TodoList.Infra.Ioc.Services
         internal static IServiceCollection AddServicesBase(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddAutoMapper(typeof(MappingsEntityDTOs));
+
 
             services.AddScoped<IJobRepository, JobRepository>();
             services.AddScoped<IJobService, JobService>();
@@ -32,9 +26,14 @@ namespace TodoList.Infra.Ioc.Services
             services.AddScoped<IRecoveryPasswordUserRepository, RecoveryPasswordRepository>();
             services.AddScoped<IRecoveryPasswordUserService, RecoveryPassawordUserService>();
 
+
+            services.AddTransient<TokenService>();
             services.AddScoped<GenerationCodeRecoveryService>();
             services.AddScoped<JobValidation>();
-            services.AddTransient<TokenService>();
+            services.AddScoped<EmailValidation>();
+            services.AddScoped<UserValidation>();
+          
+            
 
             // Obter os dados de envio de email do appsettings
             services.Configure<EmailSetting>(configuration.GetSection("EmailSettings"));

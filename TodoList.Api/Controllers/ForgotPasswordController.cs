@@ -91,7 +91,7 @@ namespace TodoList.Api.Controllers
                 if (password is null || confirmPassword is null)
                     return BadRequest("Senha inválida");
 
-                userId.UpdatePasswordUser(password);
+                userId.Password = password;
 
                 await _userService.UpdateUserAsync(userId);
             }
