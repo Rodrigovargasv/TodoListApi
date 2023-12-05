@@ -6,6 +6,8 @@ using TodoList.Infra.Ioc.Services;
 using TodoList.Infra.Ioc.Swagger;
 using TodoList.Infra.Ioc.JWT;
 using TodoList.Infra.Ioc.CORS;
+using TodoList.Infra.Ioc.Execption;
+using Microsoft.AspNetCore.Builder;
 
 namespace TodoList.Infra.Ioc
 {
@@ -21,14 +23,24 @@ namespace TodoList.Infra.Ioc
             // Serviço para halitar autenticação com swagger
             services.AddServiceSwagger();
 
-            //Services de autenticação e autorização de usuário
+            // Service de autenticação e autorização de usuário
             services.AddServiceJwtAuthenticationAndAutorization(configuration);
 
-            // Servicço de politicas de acesso api CORS
+            // Serviço de politicas de acesso api CORS
             services.AddServiceCors();
+
+            // Serviço de tratamento de execptions
+            services.AddExpectionDependencyInjection();
 
 
             return services;
+        }
+
+        public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder builder, IConfiguration config)
+        {
+            builder
+                .UseExceptionMiddleware();
+            return builder;
         }
     }
 }

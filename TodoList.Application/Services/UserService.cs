@@ -1,4 +1,5 @@
 ﻿
+using eSistemCurso.Domain.Common.Exceptions;
 using FluentValidation;
 using TodoList.Application.Interfaces;
 using TodoList.Domain.Entities;
@@ -13,10 +14,13 @@ namespace TodoList.Application.Services
         private readonly IUserRepository _userRepository;
         private readonly UserValidation _userValidation;
 
-        public UserService(IUserRepository userRepository, UserValidation validationRules)
+        private readonly TokenService _tokenService;
+
+        public UserService(IUserRepository userRepository, UserValidation validationRules, TokenService tokenService)
         {
             _userRepository = userRepository;
             _userValidation = validationRules;
+            _tokenService = tokenService;
           
         }
 
@@ -49,8 +53,18 @@ namespace TodoList.Application.Services
             return await _userRepository.UpdateUser(user);
         }
 
-        public async Task<User> GetLoginAndPassWordAsync(string userName, string password)
-            => await _userRepository.GetLoginAndPassWord(userName, password);
+        public async Task<string> GetLoginAndPassWordAsync(string userName, string password)
+        {
+           var user = await _userRepository.GetLoginAndPassWord(userName, password);
+
+            if (user is null)
+                throw new BadRequestException("Usuário ou senha inválido");
+
+            if (user.IsActive == false)
+                throw new CustomException("Usuário está inativo ou inválido");
+
+            return _tokenService.GenerateToken(user);
+        }
 
         public async Task<User> GetLoginAndEmailAync(string userName, string email)
             => await _userRepository.GetLoginAndEmail(userName, email);

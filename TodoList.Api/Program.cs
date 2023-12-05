@@ -33,7 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Configuração de middleware: Cors, Routing, Authentication, Authorization, Controllers.
+// Configuração de middleware: Cors, Routing, Authentication, Authorization, Controllers, Execptions.
+app.UseInfrastructure(builder.Configuration);
 app.UseCors("EnableCORS");
 app.UseRouting();
 app.UseAuthentication();
