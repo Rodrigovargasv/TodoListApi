@@ -5,10 +5,10 @@ namespace TodoList.Application.Interfaces
 {
     public interface IJobService
     {
-        Task CreateJobAync(Job job);
+        Task<int>CreateJobAync(Job job);
         Task<IEnumerable<Job>> GetAllJobAsync();
         Task<Job> GetJobByIdAsync(int? id);
-        Task UpdateJobAsync(Job job);
-        Task DeleteJobAsync(int? id);
+        Task<string> UpdateJobAsync(Job job, int id);
+        Task<string> DeleteJobAsync(int? id);
     }
 }

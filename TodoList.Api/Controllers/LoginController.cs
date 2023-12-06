@@ -20,7 +20,7 @@ namespace TodoList.Api.Controllers
 
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("AuthenticateUser")]
         public async Task<ActionResult<dynamic>> AuthenticateAsync(string userName, string password)
             => await _userService.GetLoginAndPassWordAsync(userName, password);
         

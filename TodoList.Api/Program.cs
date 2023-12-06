@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddControllers();
 
 builder.Services.AddControllers()
+    // Desabilidade mode state
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
@@ -40,6 +41,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Configura uso do Hangfire Dashboard
+app.UseHangfireDashboard("/hangfire", new DashboardOptions());
 
 app.MapControllers();
 

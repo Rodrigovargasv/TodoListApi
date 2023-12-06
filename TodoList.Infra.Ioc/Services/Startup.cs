@@ -25,6 +25,7 @@ namespace TodoList.Infra.Ioc.Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRecoveryPasswordUserRepository, RecoveryPasswordRepository>();
             services.AddScoped<IRecoveryPasswordUserService, RecoveryPassawordUserService>();
+            services.AddScoped<IScheduleEmailSedingService, ScheduledEmailSendingService>();
 
 
             services.AddTransient<TokenService>();

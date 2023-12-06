@@ -7,7 +7,7 @@ namespace TodoList.Application.Interfaces
     {
 
         Task<EmailUser> GetEmailByIdAsync(int? id);
-        Task<EmailUser> UpdateEmailAsync(EmailUser email);
+        Task<EmailUser> UpdateEmailAsync(int id, EmailUser email);
 
     }
 }

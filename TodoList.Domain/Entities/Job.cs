@@ -11,7 +11,7 @@ namespace TodoList.Domain.Entities
 
         public string? Description { get; set; }
 
-        public DateTime ExecutionDate { get; set; }
+        public DateTime ExecutionDate { get; set; } = DateTime.UtcNow;
 
         public JobStatus? JobStatus { get; set; }
 
