@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Application.Interfaces;
 using TodoList.Domain.Entities;
 
 namespace TodoList.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class EmailController : ControllerBase
     {
@@ -20,50 +19,16 @@ namespace TodoList.Api.Controllers
 
 
         [Authorize(Roles = "commonUser, admin")]
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetEmailById(int id) 
-        {
-            try
-            {
-                var emailId = await _emailService.GetEmailByIdAsync(id);
+        [HttpGet("GetEmailById/{id:int}")]
+        public async Task<EmailUser> GetEmailById(int id)
+            => await _emailService.GetEmailByIdAsync(id);
 
-                if (emailId == null)
-                    return BadRequest();
 
-                if (id != emailId.Id)
-                    return NotFound();
-
-                return Ok(emailId);
-            }
-            catch (Exception ex) 
-            { 
-                return BadRequest(ex.Message);
-            }
-            
-        }
 
         [Authorize(Roles = "commonUser, admin")]
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateEmail(int id, [FromBody] EmailUser email)
-        {
-
-
-            try
-            {
-                if (id == 1)
-                    await _emailService.UpdateEmailAsync(email);
-                else
-                    return BadRequest();
-
-                return Ok(email);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            
-
-        }
+        [HttpPut("UpdateEmail/{id:int}")]
+        public async Task UpdateEmail(int id, [FromBody] EmailUser email)
+            => await _emailService.UpdateEmailAsync(id, email);
 
     }
 }

@@ -34,7 +34,7 @@ namespace TodoList.Infra.Data.Repository
 
 
         public async Task<User> GetUserById(int id)
-            => await _context.Users.FindAsync(id);
+            => await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
 
         public async Task<User> UpdateUser(User user)
@@ -45,10 +45,10 @@ namespace TodoList.Infra.Data.Repository
         }
 
         public async Task<User> GetLoginAndPassWord(string userName, string password)
-            => await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName && x.Password == password);
+            => await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.UserName == userName && x.Password == password);
 
         public async Task<User> GetLoginAndEmail(string userName, string email)
-            => await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName || x.Email == email);
+            => await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.UserName == userName || x.Email == email);
 
 
     }

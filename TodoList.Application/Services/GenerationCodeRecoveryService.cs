@@ -1,6 +1,8 @@
 ﻿
 
+using eSistemCurso.Domain.Common.Exceptions;
 using Microsoft.Extensions.Caching.Memory;
+using TodoList.Application.Interfaces;
 
 namespace TodoList.Application.Services
 {
@@ -13,13 +15,16 @@ namespace TodoList.Application.Services
 
         private readonly IMemoryCache _memoryCache;
 
+        private readonly IUserService _userService;
 
 
-        public GenerationCodeRecoveryService(int validationTimeInMinutes = 2, IMemoryCache memoryCache = null)
+
+        public GenerationCodeRecoveryService(IMemoryCache memoryCache, IUserService userService)
         {
-            ValidationTimeInMinutes = validationTimeInMinutes;
+            ValidationTimeInMinutes = 2;
 
             _memoryCache = memoryCache;
+            _userService = userService;
         }
 
         public string GenerationCodeTemporary()
@@ -33,10 +38,28 @@ namespace TodoList.Application.Services
             return Code;
         }
 
-        
 
-        public bool VerifyCodeTemporary(string code)
+
+        public async Task<string> VerifyCodeTemporary(string code, string password, string confirmPassword)
         {
+
+
+            // Busca o id armazenado em cache e seta na variavel emailCache
+            _memoryCache.TryGetValue("id", out int id);
+
+            var userId = await _userService.GetUserByIdAsync(id);
+
+
+            if (password != confirmPassword)
+                throw new BadRequestException("A Senha devem ser iguais.");
+
+            if (password is null || confirmPassword is null)
+                throw new BadRequestException("Senha inválida.");
+
+            userId.Password = password;
+
+            await _userService.UpdateUserAsync(userId, id);
+
 
             if (_memoryCache.TryGetValue("CodigoTemporario", out string codeCache))
             {
@@ -44,18 +67,17 @@ namespace TodoList.Application.Services
                 var PassMinutes = (DateTime.Now - CreateDate).TotalMinutes;
 
                 if (PassMinutes < 0 || code != codeCache || code is null)
-                    return true;
+                    throw new CustomException("Código inválido ou expirado.");
             }
-            
 
-            return false;
-            
-         }
+
+            return "Senha atualiza com sucesso.";
+        }
 
         private string RandomCodeGeneration()
-            // Gere um código aleatório aqui
-          => Guid.NewGuid().ToString().Substring(0, 6);
-    
-        
+          // Gere um código aleatório aqui
+          => Guid.NewGuid().ToString().Substring(0, 6).ToUpper();
+
+
     }
 }

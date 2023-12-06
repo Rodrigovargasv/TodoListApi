@@ -1,5 +1,5 @@
 using Hangfire;
-using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 using TodoList.Infra.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,83 +7,43 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddControllers();
 
-
-// Adicionado o serviço do Swagger para que ele aceite autenticação com JWT bearer.
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoListApi", Version = "v1" });
-
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Header de autorização JWT usando o esquema Bearer. \r\n\r\nInforme 'Bearer' e o seu token. \r\n\r\nExamplo: \'Bearer 1234abcdef\'"
-
-    });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+builder.Services.AddControllers()
+    // Desabilidade mode state
+            .AddJsonOptions(options =>
             {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new string[] { }
-                }
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
-});
 
-// Adiconando o serviço de injeção de depêndencia.
-builder.Services.AddServices(builder.Configuration);
-
-builder.Services.AddControllers();
-
-// Adicionar serviço de política de acesso a Api.
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("EnableCORS", builder =>
-    {
-        builder.WithOrigins("https://todo-list-web-nine.vercel.app")
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowAnyOrigin();
-    });
-});
-
-
-// Altera o formato de data e hora do banco de dados PostgreSql
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
+// Adicona os serviços de injeção de depêndencia.
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+//Configuração de middleware: hangFire.
+app.UseHangfireDashboard();
+app.UseHttpsRedirection();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Define configuração para inicialização do hangFire.
-app.UseHangfireDashboard();
-app.UseHttpsRedirection();
-
-app.MapControllers();
-
-// Define a configuração de políticas de acesso a api.
+// Configuração de middleware: Cors, Routing, Authentication, Authorization, Controllers, Execptions.
+app.UseInfrastructure(builder.Configuration);
 app.UseCors("EnableCORS");
-
-// Define a confgiuração para autenticação e autorização da Api.
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Configura uso do Hangfire Dashboard
+app.UseHangfireDashboard("/hangfire", new DashboardOptions());
+
+app.MapControllers();
 
 app.Run();

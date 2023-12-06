@@ -18,7 +18,7 @@ namespace TodoList.Infra.Data.Repository
         }
 
         public async Task<User> VerificationUser(string email)
-            => await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            => await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
             
         
     }

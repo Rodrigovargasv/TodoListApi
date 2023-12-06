@@ -9,10 +9,10 @@ using TodoList.Domain.Entities;
 
 namespace TodoList.Application.Services
 {
-    public static class TokenService
+    public class TokenService
     {
 
-        public static string GenerateToken(User user)
+        public string GenerateToken(User user)
         {
 
             var builder = new ConfigurationBuilder()
@@ -22,30 +22,35 @@ namespace TodoList.Application.Services
             IConfigurationRoot configuration = builder.Build();
 
 
+
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
 
-                Subject = new ClaimsIdentity(new Claim[] {
-
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Role, user.Role.ToString())
-
-                }),
-
-
-                Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials
-                (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+                (new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])), SecurityAlgorithms.HmacSha256),
 
+                Expires = DateTime.UtcNow.AddHours(double.Parse(configuration["Jwt:ExpireHours"])),
+                
+                Subject = GenerateClaims(user)
             };
+
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
 
             return tokenHandler.WriteToken(token);
+        }
+
+        private static ClaimsIdentity GenerateClaims(User user)
+        {
+            var claims = new ClaimsIdentity();
+
+            claims.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            claims.AddClaim(new Claim(ClaimTypes.Role, user.Role.ToString()));
+
+            return claims;
         }
     }
 }
