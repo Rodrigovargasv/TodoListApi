@@ -28,8 +28,8 @@ namespace TodoList.Api.Controllers
 
         [Authorize(Roles = "commonUser, admin")]
         [HttpPost("SendEmailScheduled")]
-        public async Task<string> SendEmail(int jobId, int timeSendEmail, [FromBody] DataEmail emailModel)
+        public async Task<string> SendEmail(int jobId, int timeSendEmail)
         
-            => await _scheduleEmailSeding.ScheduleShipping(jobId, timeSendEmail, emailModel);
+            => await _scheduleEmailSeding.ScheduleShipping(jobId, timeSendEmail);
     }
 }

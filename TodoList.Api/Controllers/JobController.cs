@@ -31,7 +31,7 @@ namespace TodoList.Api.Controllers
 
 
         [Authorize(Roles = "commonUser, admin")]
-        [HttpGet("{id}", Name = "GetJob")]
+        [HttpGet("GetJob/{id}")]
         public async Task<Job> GetJob(int id)
            => await _jobService.GetJobByIdAsync(id);
 
