@@ -10,6 +10,6 @@ namespace TodoList.Application.Interfaces
 {
     public interface IScheduleEmailSedingService
     {
-        Task<string> ScheduleShipping(int jobId, int timeSendEmail, DataEmail emailModel);
+        Task<string> ScheduleShipping(int jobId, int timeSendEmail);
     }
 }
